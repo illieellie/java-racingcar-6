@@ -7,13 +7,13 @@ import java.util.List;
 
 
 public class Application {
-    String[] cars;
-    int[] scores;
-    final String INPUT_COMMENT_CARS = "경주할 자동차 이름을 입력하세요.(이름은 쉼표(,) 기준으로 구분)";
-    final String INPUT_COMMENT_ROUNDS = "시도할 회수는 몇회인가요?";
+    private String[] cars;
+    private int[] scores;
+    private final int MOVING_FORWARD = 4;
+    private final String INPUT_COMMENT_CARS = "경주할 자동차 이름을 입력하세요.(이름은 쉼표(,) 기준으로 구분)";
+    private final String INPUT_COMMENT_ROUNDS = "시도할 회수는 몇회인가요?";
 
     public static void main(String[] args) {
-
 
         final int ROUNDS;
 
@@ -22,14 +22,20 @@ public class Application {
 
         game.userInputCarsName();
         ROUNDS = game.userInputRounds();
+        for(int i = 0; i<ROUNDS; i++){
+            game.startRound();
+            game.resultPrintRound();
+        }
 
+        game.resultPrintAll();
     }
 
-    public void userInputCarsName(){
+    private void userInputCarsName(){
         comment(INPUT_COMMENT_CARS);
         String inputString = Console.readLine();
         // 쉼표 기준으로 String 배열에 넣기
         cars = inputString.split(",");
+        scores = new int[cars.length];
 
         // validation
         for(int i = 0;i<cars.length; i++){
@@ -43,7 +49,7 @@ public class Application {
         // 조건 예외2. 입력에 쉼표가 연달아 들어올 경우
     }
 
-    public int userInputRounds(){
+    private int userInputRounds(){
         comment(INPUT_COMMENT_ROUNDS);
         int inputInt = Integer.parseInt(Console.readLine());
 
@@ -52,12 +58,53 @@ public class Application {
         return inputInt;
     }
 
-    public void comment(String s) {
+    private void comment(String s) {
         System.out.println(s);
     }
 
+    private void startRound(){
+        // 참가자 수 만큼
+        for(int i = 0; i<cars.length; i++){
+            int temp = Randoms.pickNumberInRange(0,9);
+            if(temp>=MOVING_FORWARD){
+                scores[i]++;
+            }
+        }
+    }
 
+    private void resultPrintRound(){
+        // scores 만큼 출력
+        for(int i= 0 ; i<cars.length; i++){
+            System.out.print(cars[i]+" : ");
+            for(int j = 0; j<scores[i]; j++){
+            System.out.print("-");
+            }
+            System.out.println();
+        }
+    }
+
+    private void resultPrintAll(){
+        // 최종 우승자 : pobi
+        // 최종 우승자 : pobi, jun
+        List<String> temp = new ArrayList<>();
+        int maxScore = 0;
+        // temp 에 담고 clear
+        for(int i = 0; i<cars.length; i++){
+            if(maxScore<scores[i]){
+                temp.clear();
+                maxScore = scores[i];
+                temp.add(cars[i]);
+            }else if(maxScore==scores[i]){
+                temp.add(cars[i]);
+            }
+        }
+
+        System.out.print("최종 우승자 : ");
+        for(int i = 0; i<temp.size(); i++){
+            System.out.print(temp.get(i));
+            if(i!=temp.size()-1) {
+                System.out.print(temp.get(i)+", ");
+            }
+        }
+    }
 }
-
-// Randoms.pickNumberInRange(0,9);
-// readLine()
