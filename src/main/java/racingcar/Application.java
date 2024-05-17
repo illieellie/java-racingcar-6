@@ -38,14 +38,12 @@ public class Application {
         scores = new int[cars.length];
 
         // validation
+        // 기본 예외0. 이름이 5글자 이상인 문자가 있을 경우
         for (int i = 0; i < cars.length; i++) {
             if (cars[i].length() > 5) {
                 throw new IllegalArgumentException();
             }
         }
-        // 기본 예외0. 이름이 5글자 이상인 문자가 있을 경우
-        // 조건 예외1. 입력에 쉼표가 없을 경우 -> 없을 수 있음. 한사람만 참여할 수 있기 때문
-        // 조건 예외2. 입력에 쉼표가 연달아 들어올 경우
     }
 
     private int userInputRounds() {
@@ -87,8 +85,6 @@ public class Application {
     }
 
     private void resultPrintAll() {
-        // 최종 우승자 : pobi
-        // 최종 우승자 : pobi, jun
         List<String> temp = new ArrayList<>();
         int maxScore = 0;
         // temp 에 담고 clear
