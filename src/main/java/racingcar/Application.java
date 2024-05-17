@@ -1,4 +1,5 @@
 package racingcar;
+
 import camp.nextstep.edu.missionutils.Randoms;
 import camp.nextstep.edu.missionutils.Console;
 
@@ -22,15 +23,14 @@ public class Application {
 
         game.userInputCarsName();
         ROUNDS = game.userInputRounds();
-        for(int i = 0; i<ROUNDS; i++){
+        for (int i = 0; i < ROUNDS; i++) {
             game.startRound();
             game.resultPrintRound();
         }
-
         game.resultPrintAll();
     }
 
-    private void userInputCarsName(){
+    private void userInputCarsName() {
         comment(INPUT_COMMENT_CARS);
         String inputString = Console.readLine();
         // 쉼표 기준으로 String 배열에 넣기
@@ -38,9 +38,8 @@ public class Application {
         scores = new int[cars.length];
 
         // validation
-        for(int i = 0;i<cars.length; i++){
-            // 디버깅 해보기
-            if(cars[i].length()>5){
+        for (int i = 0; i < cars.length; i++) {
+            if (cars[i].length() > 5) {
                 throw new IllegalArgumentException();
             }
         }
@@ -49,12 +48,16 @@ public class Application {
         // 조건 예외2. 입력에 쉼표가 연달아 들어올 경우
     }
 
-    private int userInputRounds(){
+    private int userInputRounds() {
         comment(INPUT_COMMENT_ROUNDS);
-        int inputInt = Integer.parseInt(Console.readLine());
-
+        int inputInt;
+        try {
+            inputInt = Integer.parseInt(Console.readLine());
             // validation
-            // 조건 예외1. 숫자가 들어와야 하는데 문자가 들어왔다면 -> (현상황) 그냥 정상적으로 끝남
+            // 기본 예외1. 숫자가 들어와야 하는데 문자가 들어왔다면
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException();
+        }
         return inputInt;
     }
 
@@ -62,48 +65,48 @@ public class Application {
         System.out.println(s);
     }
 
-    private void startRound(){
+    private void startRound() {
         // 참가자 수 만큼
-        for(int i = 0; i<cars.length; i++){
-            int temp = Randoms.pickNumberInRange(0,9);
-            if(temp>=MOVING_FORWARD){
+        for (int i = 0; i < cars.length; i++) {
+            int temp = Randoms.pickNumberInRange(0, 9);
+            if (temp >= MOVING_FORWARD) {
                 scores[i]++;
             }
         }
     }
 
-    private void resultPrintRound(){
+    private void resultPrintRound() {
         // scores 만큼 출력
-        for(int i= 0 ; i<cars.length; i++){
-            System.out.print(cars[i]+" : ");
-            for(int j = 0; j<scores[i]; j++){
-            System.out.print("-");
+        for (int i = 0; i < cars.length; i++) {
+            System.out.print(cars[i] + " : ");
+            for (int j = 0; j < scores[i]; j++) {
+                System.out.print("-");
             }
             System.out.println();
         }
     }
 
-    private void resultPrintAll(){
+    private void resultPrintAll() {
         // 최종 우승자 : pobi
         // 최종 우승자 : pobi, jun
         List<String> temp = new ArrayList<>();
         int maxScore = 0;
         // temp 에 담고 clear
-        for(int i = 0; i<cars.length; i++){
-            if(maxScore<scores[i]){
+        for (int i = 0; i < cars.length; i++) {
+            if (maxScore < scores[i]) {
                 temp.clear();
                 maxScore = scores[i];
                 temp.add(cars[i]);
-            }else if(maxScore==scores[i]){
+            } else if (maxScore == scores[i]) {
                 temp.add(cars[i]);
             }
         }
 
         System.out.print("최종 우승자 : ");
-        for(int i = 0; i<temp.size(); i++){
+        for (int i = 0; i < temp.size(); i++) {
             System.out.print(temp.get(i));
-            if(i!=temp.size()-1) {
-                System.out.print(temp.get(i)+", ");
+            if (i != temp.size() - 1) {
+                System.out.print(", ");
             }
         }
     }
