@@ -25,4 +25,3 @@ Application Class 구현
 6. java convention 점검 
 7. 의문 
 - 참가자수에 대한 명시 
-- 에러 발생 시 어디에서 발생했는지 Log 에서 명확하게 유추할 수 없음  
