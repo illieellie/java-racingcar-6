@@ -17,93 +17,18 @@ public class Application {
     public static void main(String[] args) {
 
         final int ROUNDS;
-
+      
         // TODO: 프로그램 구현
-        Application game = new Application();
+        List<String> cars = new ArrayList<>(); // 자동차 이름
+        cars = InputView.carsName();
+        ROUNDS = InputView.rounds();
 
-        game.userInputCarsName();
-        ROUNDS = game.userInputRounds();
+        Car game = new Car(cars);
+
         for (int i = 0; i < ROUNDS; i++) {
-            game.startRound();
-            game.resultPrintRound();
+            OutputView.printResultRound(cars, game.playRound()); // 라운드별 결과
         }
-        game.resultPrintAll();
+        OutputView.printResultGame(game.findWinner()); // 게임 결과
     }
 
-    private void userInputCarsName() {
-        comment(INPUT_COMMENT_CARS);
-        String inputString = Console.readLine();
-        // 쉼표 기준으로 String 배열에 넣기
-        cars = inputString.split(",");
-        scores = new int[cars.length];
-
-        // validation
-        // 기본 예외0. 이름이 5글자 이상인 문자가 있을 경우
-        for (int i = 0; i < cars.length; i++) {
-            if (cars[i].length() > 5) {
-                throw new IllegalArgumentException();
-            }
-        }
-    }
-
-    private int userInputRounds() {
-        comment(INPUT_COMMENT_ROUNDS);
-        int inputInt;
-        try {
-            inputInt = Integer.parseInt(Console.readLine());
-            // validation
-            // 기본 예외1. 숫자가 들어와야 하는데 문자가 들어왔다면
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException();
-        }
-        return inputInt;
-    }
-
-    private void comment(String s) {
-        System.out.println(s);
-    }
-
-    private void startRound() {
-        // 참가자 수 만큼
-        for (int i = 0; i < cars.length; i++) {
-            int temp = Randoms.pickNumberInRange(0, 9);
-            if (temp >= MOVING_FORWARD) {
-                scores[i]++;
-            }
-        }
-    }
-
-    private void resultPrintRound() {
-        // scores 만큼 출력
-        for (int i = 0; i < cars.length; i++) {
-            System.out.print(cars[i] + " : ");
-            for (int j = 0; j < scores[i]; j++) {
-                System.out.print("-");
-            }
-            System.out.println();
-        }
-    }
-
-    private void resultPrintAll() {
-        List<String> temp = new ArrayList<>();
-        int maxScore = 0;
-        // temp 에 담고 clear
-        for (int i = 0; i < cars.length; i++) {
-            if (maxScore < scores[i]) {
-                temp.clear();
-                maxScore = scores[i];
-                temp.add(cars[i]);
-            } else if (maxScore == scores[i]) {
-                temp.add(cars[i]);
-            }
-        }
-
-        System.out.print("최종 우승자 : ");
-        for (int i = 0; i < temp.size(); i++) {
-            System.out.print(temp.get(i));
-            if (i != temp.size() - 1) {
-                System.out.print(", ");
-            }
-        }
-    }
 }
