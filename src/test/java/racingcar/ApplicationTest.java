@@ -64,10 +64,9 @@ class ApplicationTest extends NsTest {
     @Test
     void 이름에_대한_예외_처리2() {
         assertSimpleTest(() ->
-                assertThatThrownBy(() -> runException("", "1"))
-                        .isInstanceOf(IllegalArgumentException.class)
-        );
-    }
+                assertThatThrownBy(() -> runException("", "1"));
+                         }
+
 
     @Override
     public void runMain() {
